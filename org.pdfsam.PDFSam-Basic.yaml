@@ -1,0 +1,58 @@
+app-id: org.pdfsam.PDFSam-Basic
+runtime: org.freedesktop.Platform
+runtime-version: "23.08"
+default-branch: stable
+sdk: org.freedesktop.Sdk
+sdk-extensions: [org.freedesktop.Sdk.Extension.openjdk21]
+command: pdfsam-basic
+
+build-options:
+  build-args:
+    - --share=network
+    - --filesystem=host
+
+  append-path: /usr/lib/sdk/openjdk21/jvm/openjdk-21/bin
+
+  env:
+    JAVA_HOME: /usr/lib/sdk/openjdk21/jvm/openjdk-21
+  
+
+finish-args: [--filesystem=host]
+
+modules:
+  - name: gettext
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.5.tar.gz
+        sha256: ec1705b1e969b83a9f073144ec806151db88127f5e40fe5a94cb6c8fa48996a0
+        x-checker-data:
+          - type: anitya
+            id: 898
+            url-template: https://ftp.gnu.org/pub/gnu/gettext/gettext-$version.tar.gz
+  - name: pdfsam
+    buildsystem: simple
+    sources:
+      - type: git
+        url: https://github.com/torakiki/pdfsam/
+        tag: v5.2.3
+        commit: f9f0e7ac129192b19fcfdea93d62df4e737638df
+        x-checker-data:
+          type: git
+          tag-pattern: ^v\\d([.\\d]+)$
+      - type: script
+        dest-filename: pdfsam-basic.sh
+        commands:
+          - /app/share/pdfsam-basic/bin/pdfsam.sh "$@"
+    build-commands:
+      - /usr/lib/sdk/openjdk21/maven/bin/mvn clean install -DskipTests -Drelease -Dgpg.skip=true
+      - tar xvzf ~/.m2/repository/org/pdfsam/pdfsam-basic/5.2.0/pdfsam-basic-5.2.0.tar.gz -C /app/share/
+      - mv /app/share/pdfsam-* /app/share/pdfsam-basic/
+      - find /app/share/pdfsam-basic -type d -exec chmod 755 {} ';' # adapted from source repository (/pdfsam-basic/src/deb/control/postinst)
+      - find /app/share/pdfsam-basic -type f -exec chmod 644 {} ';' # adapted from source repository (/pdfsam-basic/src/deb/control/postinst)
+      - install -Dm755 pdfsam-basic.sh /app/bin/pdfsam-basic
+      - chmod 755 /app/share/pdfsam-basic/runtime/bin/java # adapted from source repository (/pdfsam-basic/src/deb/control/postinst)
+      - chmod 755 /app/share/pdfsam-basic/runtime/lib/jspawnhelper # adapted from source repository (/pdfsam-basic/src/deb/control/postinst)
+      - chmod 755 /app/share/pdfsam-basic/runtime/lib/jexec # adapted from source repository (/pdfsam-basic/src/deb/control/postinst)
+      - install -D src/deb/icon.svg /app/share/icons/hicolor/scalable/apps/$FLATPAK_ID.svg
+      - install -D src/deb/pdfsam-basic.desktop /app/share/applications/$FLATPAK_ID.desktop
