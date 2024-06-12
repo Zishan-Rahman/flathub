@@ -1,0 +1,36 @@
+id: com.github.deathmarine.Luyten
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk11
+command: luyten
+finish-args:
+  - --socket=x11
+  - --filesystem=host
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk11/installjdk.sh
+  - name: luyten
+    buildsystem: simple
+    sources:
+      - type: file
+        url: https://github.com/deathmarine/Luyten/releases/download/v0.5.4_Rebuilt_with_Latest_depenencies/luyten-0.5.4.jar
+        sha256: d94f65f7c133a28a010c4eb9301993a5f66cd00d52d9fafa65380b5c04f2d613
+        x-checker-data:
+          - type: json
+            url: https://api.github.com/repos/deathmarine/Luyten/releases/latest
+            version-query: .tag_name
+            url-query: .assets[] | select(.name==luyten-*.jar) | .browser_download_url
+      - type: script
+        dest-filename: luyten
+        commands:
+          - export APPDATA="$XDG_DATA_HOME"
+          - export PATH="/app/jdk/bin:$PATH"
+          - java -jar /app/bin/luyten-*.jar "$@"
+    build-commands:
+      - chmod +x luyten-*.jar
+      - install -Dm755 luyten.jar /app/bin/luyten.jar
+      - install -Dm755 luyten /app/bin/luyten
