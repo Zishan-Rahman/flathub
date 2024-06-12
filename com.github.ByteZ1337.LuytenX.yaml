@@ -1,0 +1,36 @@
+id: com.github.ByteZ1337.LuytenX
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk21
+command: luytenx
+finish-args:
+  - --socket=x11
+  - --filesystem=host
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk21/installjdk.sh
+  - name: luyten
+    buildsystem: simple
+    sources:
+      - type: file
+        url: https://github.com/ByteZ1337/LuytenX/releases/download/v0.8.1/luytenx-0.8.1.jar
+        sha256: 6b24e9dce75b07c9a611707b2f814afae85c4e7c5a6a5060abebe0dc6e09f3f3
+        x-checker-data:
+          - type: json
+            url: https://api.github.com/repos/ByteZ1337/LuytenX/releases/latest
+            version-query: .tag_name
+            url-query: .assets[] | select(.name==luytenx-*.jar) | .browser_download_url
+      - type: script
+        dest-filename: luytenx
+        commands:
+          - export APPDATA="$XDG_DATA_HOME"
+          - export PATH="/app/jdk/bin:$PATH"
+          - java -jar /app/bin/luytenx-*.jar "$@"
+    build-commands:
+      - chmod +x luytenx-*.jar
+      - install -Dm755 luytenx.jar /app/bin/luytenx.jar
+      - install -Dm755 luytenx /app/bin/luytenx
