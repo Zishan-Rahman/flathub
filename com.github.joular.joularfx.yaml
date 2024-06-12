@@ -1,0 +1,43 @@
+id: com.github.joular.joularfx
+runtime: org.freedesktop.Platform
+runtime-version: "23.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedestkop.Sdk.Extension.openjdk21
+command: joularfx
+finish-args:
+  - --socket=x11
+  - --filesystem=host
+  - --share=ipc
+  - --talk_name=org.freedesktop.Flatpak
+
+modules:
+  - name: jre
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk21/install.sh
+
+  - name: joularfx
+    buildsystem: simple
+    sources:
+      - type: git
+        url: https://github.com/joular/joularjx
+        commit: ce98cf7bcecf84c3d41bb3fe9da3d689e3c1b27f
+        tag: 2.9.0
+        x-checker-data:
+          - type: git
+            tag-pattern: ^\\d([.\\d]+)$
+      
+      - type: script
+        dest-filename: joularfx
+        commands:
+          - export APPDATA="$XDG_DATA_HOME"
+          - export PATH="/app/jdk/bin:$PATH"
+          - java -jar /app/bin/joularfx.jar "$@"
+    build-commands:
+      - chmod +x install/joularjx-*.jar
+      - install -Dm755 install/joularjx-*.jar /app/bin/joularjx.jar
+      - install -Dm644 install/config.properties /app/bin/config.properties
+      - install -Dm755 joularfx /app/bin/joularfx
+      - install -d /app/share/joularfx/
+      - cp -r * /app/share/joularfx
