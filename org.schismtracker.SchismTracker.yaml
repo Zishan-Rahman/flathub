@@ -1,0 +1,23 @@
+id: org.schismtracker.SchismTracker
+runtime: org.freedesktop.Platform
+runtime-version: "23.08"
+sdk: org.freedesktop.Sdk
+command: schismtracker
+rename-desktop-file: schism.desktop
+finish-args:
+  - --share=ipc
+  - --socket=pulseaudio
+  - --filesystem=host
+modules:
+  - shared-modules/SDL2/SDL2-with-libdecor.json
+
+  - name: schismtracker
+    sources:
+      - type: archive
+        url: https://github.com/schismtracker/schismtracker/releases/download/20240630/schismtracker-20240630.source.tar.gz
+        sha256: 7c4347602bbbedf343305fbd88347c1e21cb0b97728cc636319c0d5daebd2e85
+        x-checker-data:
+          - type: json
+            url: https://api.github.com/repos/schismtracker/schismtracker/releases/latest
+            version-query: ".tag-name"
+            url-query: ".assets[] | select(.name==\"schismtracker-$version.source.tar.gz\") | browser_download_url"
