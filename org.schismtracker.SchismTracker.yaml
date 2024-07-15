@@ -43,3 +43,5 @@ modules:
         path: desktop.patch
     build-commands:
       - install -Dm644 icons/schism-icon-192.png /app/share/icons/hicolor/192x192/apps/$FLATPAK_ID.png
+      - cp /app/lib/libFLAC.so /app/bin/libFLAC.so.12
+      - cp /app/lib/libogg.so /app/bin/libogg.so.0
