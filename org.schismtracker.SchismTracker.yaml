@@ -20,4 +20,4 @@ modules:
           - type: json
             url: https://api.github.com/repos/schismtracker/schismtracker/releases/latest
             version-query: ".tag-name"
-            url-query: ".assets[] | select(.name==\"schismtracker-$version.source.tar.gz\") | browser_download_url"
+            url-query: ".assets[] | select(.name==\"schismtracker-\" + $version +\".source.tar.gz\") | browser_download_url"
