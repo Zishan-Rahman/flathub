@@ -11,6 +11,24 @@ finish-args:
 modules:
   - shared-modules/SDL2/SDL2-with-libdecor.json
 
+  - name: flac
+    sources:
+      - type: git
+        url: https://github.com/xiph/flac
+        tag: "1.4.3"
+        x-checker-data:
+          - type: git
+            tag-pattern: "^([\\d.]+)$"
+
+  - name: ogg
+    sources:
+      - type: git
+        url: https://github.com/xiph/ogg
+        tag: "v1.3.5"
+        x-checker-data:
+          - type: git
+            tag-pattern: "^v([\\d.]+)$"
+
   - name: schismtracker
     sources:
       - type: archive
