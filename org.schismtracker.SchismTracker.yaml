@@ -39,3 +39,7 @@ modules:
             url: https://api.github.com/repos/schismtracker/schismtracker/releases/latest
             version-query: ".tag-name"
             url-query: ".assets[] | select(.name==\"schismtracker-\" + $version +\".source.tar.gz\") | browser_download_url"
+      - type: patch # Evades desktop file validation errors when using desktop-file-edit to replace icon
+        path: desktop.patch
+    build-commands:
+      - install -Dm644 icons/schism-icon-192.png /app/share/icons/hicolor/192x192/apps/$FLATPAK_ID.png

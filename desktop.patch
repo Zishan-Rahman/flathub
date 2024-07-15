@@ -1,0 +1,11 @@
+--- a/sys/fd.org/schism.desktop	2024-07-15 15:58:09.225744959 +0100
++++ a/sys/fd.org/schism.desktop	2024-07-15 15:58:05.537666956 +0100
+@@ -8,7 +8,7 @@
+ TryExec=schismtracker
+ Exec=schismtracker %f
+ Type=Application
+-Icon=schism-icon-128
++Icon=org.schismtracker.SchismTracker
+ Categories=AudioVideo;Audio;Midi;Sequencer;Player;Music;
+ MimeType=audio/x-it;audio/x-s3m;audio/x-xm;audio/x-mod;
+ Keywords=impulse;module;midi;music;
