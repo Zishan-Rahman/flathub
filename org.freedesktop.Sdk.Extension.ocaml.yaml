@@ -14,3 +14,11 @@ modules:
         x-checker-data:
           - type: git
             tag-pattern: "^([\\d.]+)$"
+  - name: opam
+    sources:
+      - type: git
+        url: https://github.com/ocaml/opam.git
+        tag: 2.2.0
+        x-checker-data:
+          - type: git
+            tag-pattern: "^([\\d.]+)$"
