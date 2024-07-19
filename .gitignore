@@ -1,0 +1,6 @@
+.flatpak-builder
+builddir
+build-dir
+.flatpak
+.vscode
+.editorconfig

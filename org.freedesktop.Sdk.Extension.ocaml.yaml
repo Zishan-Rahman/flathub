@@ -1,0 +1,16 @@
+id: org.freedesktop.Sdk.Extension.ocaml
+runtime: org.freedesktop.Sdk
+branch: "23.08"
+build-extension: true
+sdk: org.freedesktop.Sdk
+runtime-version: "23.08"
+separate-locales: false
+modules:
+  - name: ocaml
+    sources:
+      - type: git
+        url: https://github.com/ocaml/ocaml
+        tag: 5.2.0
+        x-checker-data:
+          - type: git
+            tag-pattern: "^([\\d.]+)$"
