@@ -1,0 +1,6 @@
+id: org.freedesktop.Sdk.Extension.csound6
+runtime: org.freedesktop.Runtime
+sdk: org.freedesktop.Sdk
+modules:
+    - name: libsndfile
+    - name: csound
