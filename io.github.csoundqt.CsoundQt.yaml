@@ -1,0 +1,7 @@
+id: io.github.csound.CsoundQt
+runtime: org.kde.Runtime
+sdk: org.kde.Sdk
+modules:
+  - name: libsndfile
+  - name: csound
+  - name: csoundqt
